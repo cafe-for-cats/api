@@ -26,4 +26,4 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       # - run: npm run build --if-present; remove temporarily because of only remote mongo build error
-      - run: npm test
+      - run: npm run test-prod
