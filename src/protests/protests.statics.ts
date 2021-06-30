@@ -9,15 +9,15 @@ export const addUserToProtest = async ({
 }: AddUserToProtestInput) =>
   await Protest.findOneAndUpdate(
     { _id: new ObjectId(protestId) },
-    {
-      $push: {
-        associatedUsers: {
-          _id: new ObjectId(userId),
-          accessLevel: accessLevel,
-          isCreator: false,
-        },
-      },
-    },
+    // {
+    //   $push: {
+    //     associatedUsers: {
+    //       _id: new ObjectId(userId),
+    //       accessLevel: accessLevel,
+    //       isCreator: false,
+    //     },
+    //   },
+    // },
     { new: true }
   );
 
