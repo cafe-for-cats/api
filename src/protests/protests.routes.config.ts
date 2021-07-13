@@ -30,7 +30,7 @@ export class ProtestsRoutes extends CommonRoutesConfig {
         } catch (error) {
           console.log(error);
 
-          return res.status(500).send('shucks');
+          return res.status(500).send('Server error.');
         }
       });
 
