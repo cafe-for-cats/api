@@ -15,7 +15,7 @@ export const addUserToProtest = async (input: AddUserToProtestInput) => {
   const { protestId, userId, accessLevel } = input;
 
   return await protest.findOneAndUpdate(
-    { _id: protestId },
+    { _id: { $eq: protestId } },
     {
       $push: {
         associatedUsers: {
