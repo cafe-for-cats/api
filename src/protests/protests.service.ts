@@ -17,8 +17,6 @@ export class ProtestsService {
       input.userId
     );
 
-    console.log(protests);
-
     if (protests.length > 0) {
       return {
         status: true,
