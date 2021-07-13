@@ -30,29 +30,6 @@ export class ProtestsRoutes extends CommonRoutesConfig {
         } catch (error) {
           console.log(error);
 
-          return res.status(500).send('Server error.');
-        }
-      });
-
-    this.app
-      .route('/protests/:key/details')
-      .all(validateUser /* validateProtest (checks valid id length) */)
-      .get(async (req: express.Request, res: express.Response) => {
-        try {
-          const { key } = req.params;
-
-          if (!key) {
-            return res
-              .status(400)
-              .send({ status: true, message: 'Must provide an id.' });
-          }
-
-          const result = await this.protestsService.getProtestDetails(key);
-
-          return res.status(200).send(result);
-        } catch (e) {
-          console.log(e);
-
           return res
             .status(500)
             .send({ status: false, message: 'Server error.' });

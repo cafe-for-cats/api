@@ -17,7 +17,9 @@ export class ProtestsService {
       input.userId
     );
 
-    if (protests[0]?.associatedUsers.length > 0) {
+    console.log(protests);
+
+    if (protests.length > 0) {
       return {
         status: true,
         message: 'User already exists on protest.',
