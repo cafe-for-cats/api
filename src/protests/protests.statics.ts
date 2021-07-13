@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import { AccessLevels } from './protests.service';
 
 export const getProtestDetailsById = async (protestId: string) => {
-  await protest.find(new ObjectId(protestId), {
+  return await protest.find(new ObjectId(protestId), {
     title: 1,
     description: 1,
     startDate: 1,

@@ -36,6 +36,12 @@ export class ProtestsService {
 
   async getProtestDetails(id: string) {
     const result = await getProtestDetailsById(id);
+
+    return {
+      status: true,
+      message: 'Success.',
+      payload: result,
+    };
   }
 
   async getProtestByToken(key: string) {

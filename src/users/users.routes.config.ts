@@ -50,5 +50,3 @@ export class UsersRoutes extends CommonRoutesConfig {
     return this.app;
   }
 }
-
-// Define what our MVP should be for october

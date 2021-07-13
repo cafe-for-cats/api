@@ -46,8 +46,16 @@ export class ProtestsRoutes extends CommonRoutesConfig {
               .status(400)
               .send({ status: true, message: 'Must provide an id.' });
 
-          await this.protestsService.getProtestDetails(key);
-        } catch (e) {}
+          const result = await this.protestsService.getProtestDetails(key);
+
+          return res.status(200).send(result);
+        } catch (e) {
+          console.log(e);
+
+          return res
+            .status(500)
+            .send({ status: false, message: 'Server error.' });
+        }
       });
 
     this.app
