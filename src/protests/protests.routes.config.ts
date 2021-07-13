@@ -41,10 +41,11 @@ export class ProtestsRoutes extends CommonRoutesConfig {
         try {
           const { key } = req.params;
 
-          if (!key)
+          if (!key) {
             return res
               .status(400)
               .send({ status: true, message: 'Must provide an id.' });
+          }
 
           const result = await this.protestsService.getProtestDetails(key);
 
