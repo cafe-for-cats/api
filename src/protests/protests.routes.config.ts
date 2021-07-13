@@ -9,7 +9,7 @@ export class ProtestsRoutes extends CommonRoutesConfig {
     app: express.Application,
     private protestsService: ProtestsService
   ) {
-    super(app, 'UsersRoutes');
+    super(app, 'ProtestRoutes');
   }
 
   configureRoutes() {
@@ -27,7 +27,27 @@ export class ProtestsRoutes extends CommonRoutesConfig {
             });
 
           return res.status(200).send({ status, message, payload });
-        } catch (error) {}
+        } catch (error) {
+          console.log(error);
+
+          return res.status(500).send('shucks');
+        }
+      });
+
+    this.app
+      .route('/protests/:key/details')
+      .all(validateUser /* validateProtest (checks valid id length) */)
+      .get(async (req: express.Request, res: express.Response) => {
+        try {
+          const { key } = req.params;
+
+          if (!key)
+            return res
+              .status(400)
+              .send({ status: true, message: 'Must provide an id.' });
+
+          await this.protestsService.getProtestDetails(key);
+        } catch (e) {}
       });
 
     this.app
@@ -37,11 +57,10 @@ export class ProtestsRoutes extends CommonRoutesConfig {
         try {
           const { key } = req.params;
 
-          if (!key) {
+          if (!key)
             return res
               .status(400)
               .send({ status: true, message: 'Must provide a key.' });
-          }
 
           switch (key.length) {
             case KeyTypeLengths.Token:

@@ -1,41 +1,45 @@
-import Protest from './protests.models';
+import protest from './protests.models';
 import { ObjectId } from 'mongodb';
 import { AccessLevels } from './protests.service';
 
-export const addUserToProtest = async ({
-  protestId,
-  userId,
-  accessLevel,
-}: AddUserToProtestInput) =>
-  await Protest.findOneAndUpdate(
-    { _id: new ObjectId(protestId) },
-    // {
-    //   $push: {
-    //     associatedUsers: {
-    //       _id: new ObjectId(userId),
-    //       accessLevel: accessLevel,
-    //       isCreator: false,
-    //     },
-    //   },
-    // },
+export const getProtestDetailsById = async (protestId: string) => {
+  await protest.find(new ObjectId(protestId), {
+    title: 1,
+    description: 1,
+    startDate: 1,
+    endDate: 1,
+  });
+};
+
+export const addUserToProtest = async (input: AddUserToProtestInput) => {
+  const { protestId, userId, accessLevel } = input;
+
+  return await protest.findOneAndUpdate(
+    { _id: protestId },
+    {
+      $push: {
+        associatedUsers: {
+          _id: new ObjectId(userId),
+          accessLevel,
+          isCreator: false,
+        },
+      },
+    },
     { new: true }
   );
+};
 
-export const addProtest = async ({
-  title,
-  startDate,
-  description,
-  userId,
-  duration,
-}: AddProtestInput) =>
-  await Protest.findOneAndUpdate(
-    { _id: new ObjectId() },
+export const addProtest = async (input: AddProtestInput) => {
+  const { title, startDate, description, endDate, userId } = input;
+
+  return await protest.findOneAndUpdate(
+    {},
     {
       $set: {
         title,
         startDate,
         description,
-        duration,
+        endDate,
         associatedUsers: [
           {
             _id: new ObjectId(userId),
@@ -47,9 +51,10 @@ export const addProtest = async ({
     },
     { upsert: true, new: true }
   );
+};
 
 export const getProtestByShareToken = async (token: string) =>
-  await Protest.aggregate([
+  await protest.aggregate([
     {
       $match: {
         'shareToken.token': token,
@@ -58,10 +63,6 @@ export const getProtestByShareToken = async (token: string) =>
     {
       $project: {
         _id: 1,
-        title: 1,
-        description: 1,
-        startDate: 1,
-        duration: 1,
         shareToken: 1,
       },
     },
@@ -70,8 +71,8 @@ export const getProtestByShareToken = async (token: string) =>
 export const getProtestsByUserAndProtest = async (
   protestId: string,
   userId: string
-) =>
-  await Protest.aggregate([
+) => {
+  return await protest.aggregate([
     {
       $match: {
         _id: new ObjectId(protestId),
@@ -100,9 +101,10 @@ export const getProtestsByUserAndProtest = async (
       },
     },
   ]);
+};
 
 export const getProtestsByUser = async (userId: string) =>
-  await Protest.aggregate([
+  await protest.aggregate([
     {
       $match: { 'associatedUsers._id': new ObjectId(userId) },
     },
@@ -132,9 +134,9 @@ export const getProtestsByUser = async (userId: string) =>
 export interface AddProtestInput {
   title: string;
   startDate: Date;
+  endDate: Date;
   description: string;
   userId: string;
-  duration: number;
 }
 
 export interface AddUserToProtestInput {

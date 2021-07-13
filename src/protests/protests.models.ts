@@ -1,16 +1,25 @@
-import { model, Schema } from 'mongoose';
+import { Document, model, Schema } from 'mongoose';
 
-const schema = new Schema({
+const schema = new Schema<Protest>({
   _id: Schema.Types.ObjectId,
-  title: String,
+  name: String,
   description: String,
   startDate: Date,
-  /** Duration in minutes. */
-  duration: Number,
+  endDate: Date,
   associatedUsers: [Object],
   shareToken: Object,
 });
 
-const Protest = model('Protest', schema);
+interface Protest extends Document {
+  _id: string;
+  name: string;
+  description: string;
+  startDate: Date;
+  endDate?: Date;
+  associatedUsers?: [{}];
+  shareToken?: {};
+}
 
-export default Protest;
+const protest = model<Protest>('Protest', schema);
+
+export default protest;

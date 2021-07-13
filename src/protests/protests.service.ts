@@ -6,7 +6,7 @@ import {
   AddUserToProtestInput,
   getProtestByShareToken,
   getProtestsByUserAndProtest,
-  getProtestsByUser,
+  getProtestDetailsById,
 } from './protests.statics';
 import { ObjectId } from 'mongodb';
 
@@ -17,7 +17,7 @@ export class ProtestsService {
       input.userId
     );
 
-    if (protests[0].associatedUsers.length > 0) {
+    if (protests[0]?.associatedUsers.length > 0) {
       return {
         status: true,
         message: 'User already exists on protest.',
@@ -32,6 +32,10 @@ export class ProtestsService {
       message: 'Success.',
       payload: result,
     };
+  }
+
+  async getProtestDetails(id: string) {
+    const result = await getProtestDetailsById(id);
   }
 
   async getProtestByToken(key: string) {
@@ -63,7 +67,7 @@ export class ProtestsService {
     title,
     description,
     startDate,
-    duration,
+    endDate,
   }: AddProtestInput) {
     const user = await findUserById(userId);
 
@@ -74,7 +78,7 @@ export class ProtestsService {
       title,
       description,
       startDate,
-      duration,
+      endDate,
     };
 
     const newProtestResult = await addProtest(newProtest);
