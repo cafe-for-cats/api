@@ -37,6 +37,23 @@ export class ProtestsRoutes extends CommonRoutesConfig {
       });
 
     this.app
+      .route('/protests/:key/details')
+      .all(validateUser)
+      .get(async (req: express.Request, res: express.Response) => {
+        const { key } = req.params;
+
+        if (!key)
+          return res
+            .status(400)
+            .send({ status: true, message: 'Must provide a key.' });
+
+        const { status, payload, message } =
+          await this.protestsService.getProtestDetails(key);
+
+        return res.status(200).send({ status, message, payload });
+      });
+
+    this.app
       .route('/protests/:key')
       .all(validateUser)
       .get(async (req: express.Request, res: express.Response) => {
@@ -55,7 +72,7 @@ export class ProtestsRoutes extends CommonRoutesConfig {
 
               return res.status(200).send({ status, message, payload });
             case KeyTypeLengths.ObjectId:
-              return res.status(200).send({
+              return res.status(501).send({
                 status: false,
                 message: 'GET not implemented for Protest by ObjectId.',
               });

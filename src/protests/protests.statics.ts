@@ -8,6 +8,7 @@ export const getProtestDetailsById = async (protestId: string) => {
     description: 1,
     startDate: 1,
     endDate: 1,
+    location: 1,
   });
 };
 
