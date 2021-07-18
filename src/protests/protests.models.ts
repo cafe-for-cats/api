@@ -11,7 +11,7 @@ const schema = new Schema<Protest>({
   shareToken: Object,
 });
 
-interface Location extends Document {
+interface Location {
   lat: number;
   lng: number;
   simpleName: string;
