@@ -1,18 +1,16 @@
 import { findUserById } from '../users/users.statics';
-import {
-  addProtest,
-  AddProtestInput,
-  addUserToProtest,
-  AddUserToProtestInput,
-  getProtestByShareToken,
-  getProtestsByUserAndProtest,
-  getProtestDetailsById,
-} from './protests.statics';
 import { ObjectId } from 'mongodb';
+import {
+  AddProtestInput,
+  AddUserToProtestInput,
+  ProtestRepository,
+} from './protests.statics';
 
 export class ProtestsService {
+  constructor(private repository: ProtestRepository) {}
+
   async addUserToProtest(input: AddUserToProtestInput) {
-    const protests = await getProtestsByUserAndProtest(
+    const protests = await this.repository.getProtestsWithUser(
       input.protestId,
       input.userId
     );
@@ -25,7 +23,7 @@ export class ProtestsService {
       };
     }
 
-    const result = await addUserToProtest(input);
+    const result = await this.repository.addUserToProtest(input);
 
     return {
       status: true,
@@ -35,7 +33,7 @@ export class ProtestsService {
   }
 
   async getProtestDetails(id: string) {
-    const result = await getProtestDetailsById(id);
+    const result = await this.repository.getProtestDetailsById(id);
 
     return {
       status: true,
@@ -45,7 +43,7 @@ export class ProtestsService {
   }
 
   async getProtestByToken(key: string) {
-    const result = await getProtestByShareToken(key);
+    const result = await this.repository.getProtestByShareToken(key);
 
     // TODO: is this a more UTC-safe approach for this?
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC
@@ -87,7 +85,7 @@ export class ProtestsService {
       endDate,
     };
 
-    const newProtestResult = await addProtest(newProtest);
+    const newProtestResult = await this.repository.addProtest(newProtest);
 
     const protestId = newProtestResult?.get('_id');
 

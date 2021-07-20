@@ -14,6 +14,7 @@ import rateLimit from 'express-rate-limit';
 import SocketIO from 'socket.io';
 import expressMongoSanitize from 'express-mongo-sanitize';
 import { ProtestsRoutes } from './protests/protests.routes.config';
+import { ProtestRepository } from './protests/protests.statics';
 
 const port = process.env.PORT || 5000;
 const routes: Array<CommonRoutesConfig> = [];
@@ -46,11 +47,13 @@ app.use(
 
 connectDB();
 
+const protestRepository = new ProtestRepository();
+
 const usersService = new UsersService();
-const protestsService = new ProtestsService();
+const protestsService = new ProtestsService(protestRepository);
 
 sockets.push(new CoreSockets(io));
-sockets.push(new ProtestSockets(io, protestsService));
+sockets.push(new ProtestSockets(io, protestsService, protestRepository));
 routes.push(new UsersRoutes(app, usersService));
 routes.push(new ProtestsRoutes(app, protestsService));
 

@@ -1,7 +1,6 @@
 import { CommonRoutesConfig } from '../common/common.routes.config';
 import express from 'express';
 import { ProtestsService } from './protests.service';
-import { getProtestByShareToken } from './protests.statics';
 import { validateUser } from '../middleware/authentication';
 
 export class ProtestsRoutes extends CommonRoutesConfig {
