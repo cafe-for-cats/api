@@ -1,10 +1,14 @@
 import socketio from 'socket.io';
 import { CommonSocketsConfig } from '../common/common.sockets.config';
 import { ProtestsService } from './protests.service';
-import { getProtestsByUser } from './protests.statics';
+import { ProtestRepository } from './protest.repository';
 
 export class ProtestSockets extends CommonSocketsConfig {
-  constructor(io: socketio.Server, private protestsService: ProtestsService) {
+  constructor(
+    io: socketio.Server,
+    private protestsService: ProtestsService,
+    private protestRepository: ProtestRepository
+  ) {
     super(io, 'UsersSockets');
   }
 
@@ -38,7 +42,7 @@ export class ProtestSockets extends CommonSocketsConfig {
           });
         }
 
-        const payload = await getProtestsByUser(userId);
+        const payload = await this.protestRepository.getProtestsByUser(userId);
 
         socket.emit('getProtestsForUser', {
           status: true,

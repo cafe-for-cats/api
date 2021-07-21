@@ -1,7 +1,6 @@
 import { CommonRoutesConfig } from '../common/common.routes.config';
 import express from 'express';
 import { ProtestsService } from './protests.service';
-import { getProtestByShareToken } from './protests.statics';
 import { validateUser } from '../middleware/authentication';
 
 export class ProtestsRoutes extends CommonRoutesConfig {
@@ -9,7 +8,7 @@ export class ProtestsRoutes extends CommonRoutesConfig {
     app: express.Application,
     private protestsService: ProtestsService
   ) {
-    super(app, 'UsersRoutes');
+    super(app, 'ProtestRoutes');
   }
 
   configureRoutes() {
@@ -27,7 +26,30 @@ export class ProtestsRoutes extends CommonRoutesConfig {
             });
 
           return res.status(200).send({ status, message, payload });
-        } catch (error) {}
+        } catch (error) {
+          console.log(error);
+
+          return res
+            .status(500)
+            .send({ status: false, message: 'Server error.' });
+        }
+      });
+
+    this.app
+      .route('/protests/:key/details')
+      .all(validateUser)
+      .get(async (req: express.Request, res: express.Response) => {
+        const { key } = req.params;
+
+        if (!key)
+          return res
+            .status(400)
+            .send({ status: true, message: 'Must provide a key.' });
+
+        const { status, payload, message } =
+          await this.protestsService.getProtestDetails(key);
+
+        return res.status(200).send({ status, message, payload });
       });
 
     this.app
@@ -37,11 +59,10 @@ export class ProtestsRoutes extends CommonRoutesConfig {
         try {
           const { key } = req.params;
 
-          if (!key) {
+          if (!key)
             return res
               .status(400)
               .send({ status: true, message: 'Must provide a key.' });
-          }
 
           switch (key.length) {
             case KeyTypeLengths.Token:
@@ -50,7 +71,7 @@ export class ProtestsRoutes extends CommonRoutesConfig {
 
               return res.status(200).send({ status, message, payload });
             case KeyTypeLengths.ObjectId:
-              return res.status(200).send({
+              return res.status(501).send({
                 status: false,
                 message: 'GET not implemented for Protest by ObjectId.',
               });

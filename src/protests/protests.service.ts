@@ -1,23 +1,21 @@
 import { findUserById } from '../users/users.statics';
-import {
-  addProtest,
-  AddProtestInput,
-  addUserToProtest,
-  AddUserToProtestInput,
-  getProtestByShareToken,
-  getProtestsByUserAndProtest,
-  getProtestsByUser,
-} from './protests.statics';
 import { ObjectId } from 'mongodb';
+import {
+  AddProtestInput,
+  AddUserToProtestInput,
+  ProtestRepository,
+} from './protest.repository';
 
 export class ProtestsService {
+  constructor(private repository: ProtestRepository) {}
+
   async addUserToProtest(input: AddUserToProtestInput) {
-    const protests = await getProtestsByUserAndProtest(
+    const protests = await this.repository.getProtestsWithUser(
       input.protestId,
       input.userId
     );
 
-    if (protests[0].associatedUsers.length > 0) {
+    if (protests.length > 0) {
       return {
         status: true,
         message: 'User already exists on protest.',
@@ -25,7 +23,17 @@ export class ProtestsService {
       };
     }
 
-    const result = await addUserToProtest(input);
+    const result = await this.repository.addUserToProtest(input);
+
+    return {
+      status: true,
+      message: 'Success.',
+      payload: result,
+    };
+  }
+
+  async getProtestDetails(id: string) {
+    const result = await this.repository.getProtestDetailsById(id);
 
     return {
       status: true,
@@ -35,7 +43,7 @@ export class ProtestsService {
   }
 
   async getProtestByToken(key: string) {
-    const result = await getProtestByShareToken(key);
+    const result = await this.repository.getProtestByShareToken(key);
 
     // TODO: is this a more UTC-safe approach for this?
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC
@@ -63,7 +71,7 @@ export class ProtestsService {
     title,
     description,
     startDate,
-    duration,
+    endDate,
   }: AddProtestInput) {
     const user = await findUserById(userId);
 
@@ -74,10 +82,10 @@ export class ProtestsService {
       title,
       description,
       startDate,
-      duration,
+      endDate,
     };
 
-    const newProtestResult = await addProtest(newProtest);
+    const newProtestResult = await this.repository.addProtest(newProtest);
 
     const protestId = newProtestResult?.get('_id');
 
@@ -98,10 +106,9 @@ export class ProtestsService {
 
 export enum AccessLevels {
   Admin = -1,
-  Leader = 1,
-  Organizer = 2,
-  Attendee = 3,
-  Unassigned = 4,
+  Organizer = 1,
+  Attendee = 2,
+  Unassigned = 3,
 }
 
 export interface ProtestAggregate {

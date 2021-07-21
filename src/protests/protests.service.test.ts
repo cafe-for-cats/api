@@ -1,21 +1,17 @@
 import { expect } from 'chai';
 import sinon, { SinonStubbedInstance } from 'sinon';
 import { ProtestsService } from './protests.service';
-import * as protestStatics from './protests.statics';
-import * as userStatics from '../users/users.statics';
 import { UsersService } from '../users/users.service';
-import User from '../users/users.models';
-import Protest from './protests.models';
-import { ObjectId } from 'mongodb';
+import { ProtestRepository } from './protest.repository';
 
 describe('ProtestsService', function () {
   let protestsService: ProtestsService;
+  let protestRepository: ProtestRepository;
   let usersService: UsersService;
-  let findByUserIdMock: SinonStubbedInstance<typeof userStatics.findUserById>;
-  let addProtestMock: SinonStubbedInstance<typeof protestStatics.addProtest>;
 
   beforeEach(() => {
-    protestsService = new ProtestsService();
+    protestRepository = new ProtestRepository();
+    protestsService = new ProtestsService(protestRepository);
     usersService = new UsersService();
   });
 

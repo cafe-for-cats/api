@@ -12,7 +12,7 @@ export const findUserByUsername = async (username: string) =>
  * Adds a new user.
  * @param username The user's username.
  * @param password The hashed version of the user's password.
- * @returns
+ * @returns The instance of the new user.
  */
 export const addUser = async (username: string, password: string) =>
   await User.findOneAndUpdate(
