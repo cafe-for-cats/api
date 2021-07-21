@@ -109,8 +109,6 @@ export class ProtestRepository {
   addProtest = async (input: AddProtestInput) => {
     const { title, startDate, description, endDate, userId } = input;
 
-    console.log(input);
-
     return await protest.findOneAndUpdate(
       { _id: new ObjectId().toHexString() },
       {
