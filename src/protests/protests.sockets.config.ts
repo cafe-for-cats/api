@@ -1,7 +1,7 @@
 import socketio from 'socket.io';
 import { CommonSocketsConfig } from '../common/common.sockets.config';
 import { ProtestsService } from './protests.service';
-import { ProtestRepository } from './protests.statics';
+import { ProtestRepository } from './protest.repository';
 
 export class ProtestSockets extends CommonSocketsConfig {
   constructor(

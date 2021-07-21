@@ -14,7 +14,7 @@ import rateLimit from 'express-rate-limit';
 import SocketIO from 'socket.io';
 import expressMongoSanitize from 'express-mongo-sanitize';
 import { ProtestsRoutes } from './protests/protests.routes.config';
-import { ProtestRepository } from './protests/protests.statics';
+import { ProtestRepository } from './protests/protest.repository';
 
 const port = process.env.PORT || 5000;
 const routes: Array<CommonRoutesConfig> = [];

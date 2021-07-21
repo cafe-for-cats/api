@@ -4,7 +4,7 @@ import {
   AddProtestInput,
   AddUserToProtestInput,
   ProtestRepository,
-} from './protests.statics';
+} from './protest.repository';
 
 export class ProtestsService {
   constructor(private repository: ProtestRepository) {}
@@ -106,10 +106,9 @@ export class ProtestsService {
 
 export enum AccessLevels {
   Admin = -1,
-  Leader = 1,
-  Organizer = 2,
-  Attendee = 3,
-  Unassigned = 4,
+  Organizer = 1,
+  Attendee = 2,
+  Unassigned = 3,
 }
 
 export interface ProtestAggregate {

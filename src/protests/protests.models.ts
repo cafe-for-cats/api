@@ -2,7 +2,7 @@ import { Document, model, Schema } from 'mongoose';
 
 const schema = new Schema<Protest>({
   _id: Schema.Types.ObjectId,
-  name: String,
+  title: String,
   description: String,
   startDate: Date,
   endDate: Date,
@@ -25,7 +25,7 @@ interface Location {
 
 export interface Protest extends Document {
   _id: string;
-  name: string;
+  title: string;
   description: string;
   startDate: Date;
   endDate?: Date;
