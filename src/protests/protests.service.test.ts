@@ -2,13 +2,16 @@ import { expect } from 'chai';
 import sinon, { SinonStubbedInstance } from 'sinon';
 import { ProtestsService } from './protests.service';
 import { UsersService } from '../users/users.service';
+import { ProtestRepository } from './protest.repository';
 
 describe('ProtestsService', function () {
   let protestsService: ProtestsService;
+  let protestRepository: ProtestRepository;
   let usersService: UsersService;
 
   beforeEach(() => {
-    protestsService = new ProtestsService();
+    protestRepository = new ProtestRepository();
+    protestsService = new ProtestsService(protestRepository);
     usersService = new UsersService();
   });
 
