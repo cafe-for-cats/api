@@ -9,6 +9,7 @@ const schema = new Schema<Protest>({
   location: Object,
   associatedUsers: [Object],
   shareToken: Object,
+  pins: [Object],
 });
 
 interface Location {
@@ -30,10 +31,11 @@ export interface Protest extends Document {
   startDate: Date;
   endDate?: Date;
   location: Location;
+  pins: any;
   associatedUsers?: [{}];
   shareToken?: {};
 }
 
-const protest = model<Protest>('Protest', schema);
+const Protest = model<Protest>('Protest', schema);
 
-export default protest;
+export default Protest;
