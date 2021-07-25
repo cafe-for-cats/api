@@ -1,27 +1,39 @@
 import { expect } from 'chai';
-import sinon, { SinonStubbedInstance } from 'sinon';
 import { ProtestsService } from './protests.service';
-import { UsersService } from '../users/users.service';
-import { ProtestRepository } from './protest.repository';
+import Protest from './protests.models';
 
 describe('ProtestsService', function () {
   let protestsService: ProtestsService;
-  let protestRepository: ProtestRepository;
-  let usersService: UsersService;
 
   beforeEach(() => {
-    protestRepository = new ProtestRepository();
-    protestsService = new ProtestsService(protestRepository);
-    usersService = new UsersService();
-  });
-
-  afterEach(() => {
-    sinon.restore();
+    protestsService = new ProtestsService(protestRepositoryStub);
   });
 
   it('should create', () => {
-    expect(usersService).to.be.ok;
+    expect(protestsService).to.be.ok;
   });
-
-  it('should add a protest', async () => {});
 });
+
+const protestRepositoryStub = {
+  getProtestPins: async (id: string) => {
+    return await new Protest();
+  },
+  getProtestsByUser: async () => {
+    return await [new Protest()];
+  },
+  getProtestByShareToken: async () => {
+    return await [new Protest()];
+  },
+  getProtestsWithUser: async () => {
+    return await [new Protest()];
+  },
+  getProtestDetailsById: async () => {
+    return await new Protest();
+  },
+  addUserToProtest: async () => {
+    return await new Protest();
+  },
+  addProtest: async () => {
+    return await new Protest();
+  },
+};

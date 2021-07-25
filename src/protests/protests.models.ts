@@ -9,6 +9,7 @@ const schema = new Schema<Protest>({
   location: Object,
   associatedUsers: [Object],
   shareToken: Object,
+  pins: [Object],
 });
 
 interface Location {
@@ -23,6 +24,14 @@ interface Location {
   };
 }
 
+interface Pin {
+  lat: number;
+  lng: number;
+  label: string;
+  imageUrl: string;
+  createDate: string;
+}
+
 export interface Protest extends Document {
   _id: string;
   title: string;
@@ -30,10 +39,11 @@ export interface Protest extends Document {
   startDate: Date;
   endDate?: Date;
   location: Location;
+  pins: [Pin];
   associatedUsers?: [{}];
   shareToken?: {};
 }
 
-const protest = model<Protest>('Protest', schema);
+const Protest = model<Protest>('Protest', schema);
 
-export default protest;
+export default Protest;

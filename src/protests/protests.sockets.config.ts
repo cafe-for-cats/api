@@ -16,6 +16,24 @@ export class ProtestSockets extends CommonSocketsConfig {
     this.io.of('/protests').on('connection', (socket: socketio.Socket) => {
       console.log(`↑  Connected client '${socket.id}' to socket /protests`);
 
+      socket.on('getPins', async (input) => {
+        try {
+          const payload = await this.protestRepository.getProtestPins(
+            input.protestId
+          );
+
+          socket.emit('getPins', {
+            status: true,
+            message: 'success',
+            payload,
+          });
+        } catch (error) {
+          console.error(error);
+
+          socket.emit('getPins', 'Failure');
+        }
+      });
+
       socket.on('addProtest', async (input) => {
         try {
           const payload = await this.protestsService.addProtest(input);
@@ -25,8 +43,8 @@ export class ProtestSockets extends CommonSocketsConfig {
             message: 'success',
             payload,
           });
-        } catch (e) {
-          console.error(e);
+        } catch (error) {
+          console.error(error);
 
           socket.emit('addProtest', 'Failure');
         }
