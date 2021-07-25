@@ -166,12 +166,23 @@
 
       function addProtest() {
         const elements = document.querySelectorAll('input.add-protest');
-
+        const d = new Date();
         const input = {
-          title: elements[0].value,
-          userId: elements[1].value,
-          description: elements[2].value,
-          startDate: elements[3].value,
+          title: 'elements[0].value',
+          userId: '60986b84b53a47745c5fb2a7',
+          description: 'elements[2].value',
+          startDate: d,
+          location: {
+            lat: 1.2,
+            lng: 3.4,
+            simpleName: '123 Street City ST 12345',
+            fullName: {
+              street: '123 Street',
+              city: 'City',
+              state: 'ST',
+              zipcode: '12345',
+            },
+          },
         };
 
         protestSocket.emit('addProtest', input);
