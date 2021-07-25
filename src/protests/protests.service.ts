@@ -72,6 +72,7 @@ export class ProtestsService {
     description,
     startDate,
     endDate,
+    location,
   }: AddProtestInput) {
     const user = await findUserById(userId);
 
@@ -83,6 +84,7 @@ export class ProtestsService {
       description,
       startDate,
       endDate,
+      location,
     };
 
     const newProtestResult = await this.repository.addProtest(newProtest);

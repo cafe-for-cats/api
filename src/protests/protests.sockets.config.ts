@@ -1,7 +1,7 @@
 import socketio from 'socket.io';
 import { CommonSocketsConfig } from '../common/common.sockets.config';
 import { ProtestsService } from './protests.service';
-import { ProtestRepository } from './protest.repository';
+import { AddProtestInput, ProtestRepository } from './protest.repository';
 
 export class ProtestSockets extends CommonSocketsConfig {
   constructor(
@@ -34,7 +34,7 @@ export class ProtestSockets extends CommonSocketsConfig {
         }
       });
 
-      socket.on('addProtest', async (input) => {
+      socket.on('addProtest', async (input: AddProtestInput) => {
         try {
           const payload = await this.protestsService.addProtest(input);
 

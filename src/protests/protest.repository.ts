@@ -1,4 +1,4 @@
-import Protest from './protests.models';
+import Protest, { Location } from './protests.models';
 import { ObjectId } from 'mongodb';
 import { AccessLevels } from './protests.service';
 
@@ -112,7 +112,7 @@ export class ProtestRepository {
   };
 
   addProtest = async (input: AddProtestInput) => {
-    const { title, startDate, description, endDate, userId } = input;
+    const { title, startDate, description, endDate, userId, location } = input;
 
     return await Protest.findOneAndUpdate(
       { _id: new ObjectId().toHexString() },
@@ -122,6 +122,7 @@ export class ProtestRepository {
           startDate,
           description,
           endDate,
+          location,
           associatedUsers: [
             {
               _id: new ObjectId(userId),
@@ -141,6 +142,7 @@ export interface AddProtestInput {
   endDate: Date;
   description: string;
   userId: string;
+  location: Location;
 }
 
 export interface AddUserToProtestInput {

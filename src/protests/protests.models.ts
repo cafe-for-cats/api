@@ -12,7 +12,7 @@ const schema = new Schema<Protest>({
   pins: [Object],
 });
 
-interface Location {
+export interface Location {
   lat: number;
   lng: number;
   simpleName: string;
