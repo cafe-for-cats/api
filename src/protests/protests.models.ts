@@ -24,6 +24,14 @@ interface Location {
   };
 }
 
+interface Pin {
+  lat: number;
+  lng: number;
+  label: string;
+  imageUrl: string;
+  createDate: string;
+}
+
 export interface Protest extends Document {
   _id: string;
   title: string;
@@ -31,7 +39,7 @@ export interface Protest extends Document {
   startDate: Date;
   endDate?: Date;
   location: Location;
-  pins: any;
+  pins: [Pin];
   associatedUsers?: [{}];
   shareToken?: {};
 }
