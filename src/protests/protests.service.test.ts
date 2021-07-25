@@ -16,7 +16,7 @@ describe('ProtestsService', function () {
 
 const protestRepositoryStub = {
   getProtestPins: async (id: string) => {
-    return await [new Protest()];
+    return await new Protest();
   },
   getProtestsByUser: async () => {
     return await [new Protest()];
@@ -28,7 +28,7 @@ const protestRepositoryStub = {
     return await [new Protest()];
   },
   getProtestDetailsById: async () => {
-    return await [new Protest()];
+    return await new Protest();
   },
   addUserToProtest: async () => {
     return await new Protest();
