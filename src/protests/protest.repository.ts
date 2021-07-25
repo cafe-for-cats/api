@@ -4,7 +4,7 @@ import { AccessLevels } from './protests.service';
 
 export class ProtestRepository {
   getProtestPins = async (protestId: string) =>
-    await Protest.find(new ObjectId(protestId), {
+    await Protest.findOne(new ObjectId(protestId), {
       pins: 1,
     });
 
@@ -84,7 +84,7 @@ export class ProtestRepository {
   };
 
   getProtestDetailsById = async (protestId: string) => {
-    return await Protest.find(new ObjectId(protestId), {
+    return await Protest.findOne(new ObjectId(protestId), {
       title: 1,
       description: 1,
       startDate: 1,
